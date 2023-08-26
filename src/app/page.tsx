@@ -1,10 +1,12 @@
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Github } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <main>
+    <main className=" min-h-[calc(100vh-3.5rem)]  flex justify-center items-center">
       <div className="flex flex-col items-center gap-4">
         <h1 className="text-6xl tracking-tighter font-extrabold">
           code<span className="text-primary">Ready</span>
@@ -14,7 +16,7 @@ export default function Home() {
           Developera.
         </p>
         <div className="flex items-center gap-2">
-          <Button size="lg">Get started</Button>
+          <Link href="/instalations/introduction" className={cn(buttonVariants({size:"lg"}))}>Get started</Link>
           <Button variant="ghost" size="lg">
             <Github className="mr-2" />
             Github{" "}
