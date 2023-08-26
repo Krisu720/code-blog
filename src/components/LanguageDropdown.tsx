@@ -27,7 +27,7 @@ const LanguageDropdown: FC<LanguageDropdownProps> = ({}) => {
         </DropdownMenuItem>
         <DropdownMenuItem className="flex gap-1">
           <span className="text-muted-foreground uppercase text-xs">PL</span>{" "}
-          Polish
+          Polski
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -19,14 +19,14 @@ const Sidebar: FC<SidebarProps> = ({}) => {
 
   const navs = {
     "Getting Started": [{ label: "Introduction", path: "introduction" }],
-    "Frameworks": [
+    Frameworks: [
       { label: "JS VITE", path: "jsvite" },
       { label: "React VITE", path: "reactvite" },
       { label: "Next.js 13", path: "nextjs13" },
       { label: "Express.js", path: "express" },
       { label: "React Native Expo", path: "reactnativeexpo" },
     ],
-    "Packages": [
+    Packages: [
       { label: "tRPC", path: "trpc" },
       { label: "Zustand", path: "zustand" },
       { label: "Zod", path: "zod" },
@@ -51,33 +51,36 @@ const Sidebar: FC<SidebarProps> = ({}) => {
         <aside className="flex flex-col items-start">
           {Object.entries(navs).map(({ "0": name, "1": nav }) => (
             <React.Fragment key={name}>
-              <span className="text-muted-foreground text-sm my-2">{name}</span>
-            {nav.map(nav=>{
-              if(params.slug === nav.path) {
-
-                return <span className="bg-primary select-none hover:no-underline px-2 py-1 rounded text-secondary">
-                    {nav.label}
-                </span>
-             
-              } else {
-                return <Link
-              key={nav.label}
-              href={nav.path}
-              className={cn(
-                buttonVariants({
-                  variant: "link",
-                  size: "sm",
-                  className:
-                    params.slug === nav.path
-                      ? "bg-primary text-secondary hover:no-underline"
-                      : "",
-                })
-              )}
-            >
-              {nav.label}
-            </Link> 
-              }
-            })}
+              <span className="text-muted-foreground text-base my-2">
+                {name}
+              </span>
+              {nav.map((nav) => {
+                if (params.slug === nav.path) {
+                  return (
+                    <span
+                      key={nav.label}
+                      className="bg-primary select-none hover:no-underline px-2 py-2 rounded text-secondary text-sm"
+                    >
+                      {nav.label}
+                    </span>
+                  );
+                } else {
+                  return (
+                    <Link
+                      key={nav.label}
+                      href={nav.path}
+                      className={cn(
+                        buttonVariants({
+                          variant: "link",
+                          size: "sm",
+                        })
+                      )}
+                    >
+                      {nav.label}
+                    </Link>
+                  );
+                }
+              })}
             </React.Fragment>
           ))}
         </aside>

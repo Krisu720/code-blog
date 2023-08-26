@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, use, useEffect } from "react";
 import { Button, buttonVariants } from "./ui/button";
 import ThemeDropdown from "./ThemeDropdown";
 import LanguageDropdown from "./LanguageDropdown";
@@ -9,10 +9,12 @@ import PackageDropdown from "./PackageDropdown";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import Sidebar from "./Sidebar";
-
+import SearchDialog from "./SearchDialog";
 interface NavbarProps {}
 
 const Navbar: FC<NavbarProps> = ({}) => {
+
+
   return (
     <div className=" border-b sticky top-0 dark:bg-black/20 backdrop-blur-xl z-10">
       <div className="h-14 container mx-auto">
@@ -21,8 +23,6 @@ const Navbar: FC<NavbarProps> = ({}) => {
             <Link href="/" className="font-medium mr-4">
               code<span className="text-primary">Ready</span>
             </Link>
-
-           
             <Link
               href="/instalations/introduction"
               className={cn(buttonVariants({ variant: "ghost" }))}
@@ -37,10 +37,11 @@ const Navbar: FC<NavbarProps> = ({}) => {
             </Link>
             <Button variant="ghost">Components</Button>
           </div>
-          <div className="flex">
-            <ThemeDropdown />
-            <LanguageDropdown />
+          <div className="flex items-center gap-1">
+            <SearchDialog/>
             <PackageDropdown />
+            <LanguageDropdown />
+            <ThemeDropdown />
           </div>
         </div>
         <div className="md:hidden h-full w-full flex items-center justify-between">
@@ -50,7 +51,6 @@ const Navbar: FC<NavbarProps> = ({}) => {
                 <Menu />
               </SheetTrigger>
               <SheetContent side="left" className="flex flex-col">
-              
                 <Link
                   href="/instalations/introduction"
                   className={cn(buttonVariants({ variant: "ghost" }))}
@@ -64,7 +64,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
                   Guides
                 </Link>
                 <Button variant="ghost">Components</Button>
-                <Sidebar/>
+                <Sidebar />
               </SheetContent>
             </Sheet>
           </Button>
