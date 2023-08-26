@@ -22,17 +22,18 @@ const Navbar: FC<NavbarProps> = ({}) => {
               code<span className="text-primary">Ready</span>
             </Link>
 
-            <Link
-              href="/resources"
-              className={cn(buttonVariants({ variant: "ghost" }))}
-            >
-              Resources
-            </Link>
+           
             <Link
               href="/instalations/introduction"
               className={cn(buttonVariants({ variant: "ghost" }))}
             >
-              Instalation
+              Instalations
+            </Link>
+            <Link
+              href="/guides"
+              className={cn(buttonVariants({ variant: "ghost" }))}
+            >
+              Guides
             </Link>
             <Button variant="ghost">Components</Button>
           </div>
@@ -49,17 +50,18 @@ const Navbar: FC<NavbarProps> = ({}) => {
                 <Menu />
               </SheetTrigger>
               <SheetContent side="left" className="flex flex-col">
-                <Link
-                  href="/resources"
-                  className={cn(buttonVariants({ variant: "ghost" }))}
-                >
-                  Resources
-                </Link>
+              
                 <Link
                   href="/instalations/introduction"
                   className={cn(buttonVariants({ variant: "ghost" }))}
                 >
                   Instalation
+                </Link>
+                <Link
+                  href="/guides"
+                  className={cn(buttonVariants({ variant: "ghost" }))}
+                >
+                  Guides
                 </Link>
                 <Button variant="ghost">Components</Button>
                 <Sidebar/>

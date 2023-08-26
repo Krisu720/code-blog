@@ -10,7 +10,7 @@ interface PageProps {
 
 const getDoc = async (slug: string) => {
   const doc = allDocs.find((doc) => {
-    return doc.slugAsParams === slug;
+    return doc.slugAsParams === "instalations/"+slug;
   });
 
   if (!doc) notFound();
@@ -31,19 +31,6 @@ const page = async ({ params: { slug } }: PageProps) => {
           <p className="text-2xl text-muted-foreground mt-2">
             {doc.description}
           </p>
-        </div>
-        <div className="flex mt-2">
-          <button className="border rounded-2xl p-6 hover:ring ring-primary transition-all cursor-pointer focus:ring-green-500">
-            <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold text-primary">pnpm</h1>
-              <p className="text-lg">contentlayer</p>
-            </div>
-            <div className="flex">
-              <span className="uppercase text-muted-foreground text-xs">
-                Quick install prompt copy
-              </span>
-            </div>
-          </button>
         </div>
         <Mdx code={doc.body.code} />
       </main>

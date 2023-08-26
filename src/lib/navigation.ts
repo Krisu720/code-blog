@@ -6,7 +6,7 @@ type Navigation = {
 
 
 export const navigation = {
-  getting: {
+  gettingstarted: {
     label: "Getting Started",
     nav: [{label: "Introduction",path: "/introduction"}]
   }

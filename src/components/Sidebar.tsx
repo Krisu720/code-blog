@@ -1,90 +1,85 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { navigation } from "@/lib/navigation";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
-import { FC } from "react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import React, { FC } from "react";
 
 interface SidebarProps {}
 
 const Sidebar: FC<SidebarProps> = ({}) => {
+  const params = useParams();
 
-  console.log(navigation)
+  type Navs = {
+    label: string;
+    path: string;
+  }[];
+
+  const navs = {
+    "Getting Started": [{ label: "Introduction", path: "introduction" }],
+    "Frameworks": [
+      { label: "JS VITE", path: "jsvite" },
+      { label: "React VITE", path: "reactvite" },
+      { label: "Next.js 13", path: "nextjs13" },
+      { label: "Express.js", path: "express" },
+      { label: "React Native Expo", path: "reactnativeexpo" },
+    ],
+    "Packages": [
+      { label: "tRPC", path: "trpc" },
+      { label: "Zustand", path: "zustand" },
+      { label: "Zod", path: "zod" },
+      { label: "React Hook Form", path: "reacthookform" },
+      { label: "Framer Motion", path: "framermotion" },
+      { label: "GSAP", path: "gsap" },
+      { label: "Tailwind", path: "tailwind" },
+      { label: "Shadcn library", path: "shadcn" },
+      { label: "React Router", path: "reactrouter" },
+      { label: "Next Auth", path: "nextauth" },
+      { label: "Next Themes", path: "nextthemes" },
+      { label: "Prisma", path: "prisma" },
+      { label: "Drizzle", path: "drizzleorm" },
+      { label: "Apex Charts", path: "apexcharts" },
+      { label: "MDX", path: "mdx" },
+    ],
+  } satisfies Record<PropertyKey, Navs>;
 
   return (
     <ScrollArea.Root className="w-full h-full py-4 ">
       <ScrollArea.Viewport className="h-full w-full ">
         <aside className="flex flex-col items-start">
-          <span className="text-muted-foreground text-sm my-2">Getting started</span>
-          <Button
-            variant="link"
-            size="sm"
-            className="bg-primary text-secondary"
-          >
-            Introduction
-          </Button>
-          <span className="text-muted-foreground text-sm my-2">Frameworks</span>
-          <Button variant="link" size="sm">
-            JS VITE
-          </Button>
-          <Button variant="link" size="sm">
-            React VITE
-          </Button>
-          <Button variant="link" size="sm">
-            Next.js 13
-          </Button>
-          <Button variant="link" size="sm">
-            Express.js
-          </Button>
-          <Button variant="link" size="sm">
-            React Native Expo
-          </Button>
-          <span className="text-muted-foreground text-sm my-2">Packages</span>
-          <Button variant="link" size="sm">
-            tRPC
-          </Button>
-          <Button variant="link" size="sm">
-            Zustand
-          </Button>
-          <Button variant="link" size="sm">
-            Zod
-          </Button>
-          <Button variant="link" size="sm">
-            React Hook Form
-          </Button>
-          <Button variant="link" size="sm">
-            Framer Motion
-          </Button>
-          <Button variant="link" size="sm">
-            GSAP
-          </Button>
-          <Button variant="link" size="sm">
-            Tailwind
-          </Button>
-          <Button variant="link" size="sm">
-            Shadcn library
-          </Button>
-          <Button variant="link" size="sm">
-            React Router
-          </Button>
-          <Button variant="link" size="sm">
-            Next Auth
-          </Button>
-          <Button variant="link" size="sm">
-            Next Themes
-          </Button>
-          <Button variant="link" size="sm">
-            Prisma
-          </Button>
-          <Button variant="link" size="sm">
-            Drizzle
-          </Button>
-          <Button variant="link" size="sm">
-            Apex Charts
-          </Button>
-          <Button variant="link" size="sm">
-            MDX
-          </Button>
+          {Object.entries(navs).map(({ "0": name, "1": nav }) => (
+            <React.Fragment key={name}>
+              <span className="text-muted-foreground text-sm my-2">{name}</span>
+            {nav.map(nav=>{
+              if(params.slug === nav.path) {
+
+                return <span className="bg-primary select-none hover:no-underline px-2 py-1 rounded text-secondary">
+                    {nav.label}
+                </span>
+             
+              } else {
+                return <Link
+              key={nav.label}
+              href={nav.path}
+              className={cn(
+                buttonVariants({
+                  variant: "link",
+                  size: "sm",
+                  className:
+                    params.slug === nav.path
+                      ? "bg-primary text-secondary hover:no-underline"
+                      : "",
+                })
+              )}
+            >
+              {nav.label}
+            </Link> 
+              }
+            })}
+            </React.Fragment>
+          ))}
         </aside>
       </ScrollArea.Viewport>
       <ScrollArea.Scrollbar orientation="vertical" className="flex w-1">
