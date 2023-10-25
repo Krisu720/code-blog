@@ -1,9 +1,13 @@
+## Warning
+
+This project is not ready. It is still in progress.
+
 <img src="https://uploadthing.com/f/a1e66881-8b62-4721-949d-72e1699fbba9-1b4.png"/>
 <img src="https://uploadthing.com/f/2f8104c6-b536-4178-847c-03d018e7f994-19a.png"/>
 
 ## Demo
 
-https://cloud-storage-chi.vercel.app/
+https://code-blog-alpha.vercel.app/
 
 
 ## Used Technologies
@@ -25,12 +29,9 @@ https://cloud-storage-chi.vercel.app/
 
 ## Installation
 
-### REQUIRED:
-- Uploadthing account - https://uploadthing.com/
-
 1.First clone repository or download from github.
 ```
-git clone https://github.com/Krisu720/cloud-storage.git
+git clone https://github.com/Krisu720/code-blog.git
 ```
 2.Then install missing packages using node.
 ```
