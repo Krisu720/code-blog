@@ -1,0 +1,23 @@
+{
+    "hello": {
+        "description": "Ready code components and templates,which are saving Web developers time.",
+        "action": "Get started"
+    },
+    "navbar": {
+        "navs": [
+            "Instalation",
+            "Guides",
+            "Components"
+        ]
+    },
+    "sidebar": {
+        "names": [
+            "Getting Started",
+            "Frameworks",
+            "Packages"
+        ]
+    },
+    "guides": {
+        "title": "Guides"
+    }
+}

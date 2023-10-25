@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { checkLang } from "../../../dictonaries";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,17 +15,22 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  params:{lang},
 }: {
   children: React.ReactNode;
+  params: {lang:string};
 }) {
   return (
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-            <Navbar/>
+          <Navbar lang={checkLang(lang)}/>
+          <div className="min-h-[calc(100vh-3.5rem)]">
+
           {children}
-          <Footer/>
-          </Providers>
+          </div>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

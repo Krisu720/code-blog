@@ -29,6 +29,7 @@ export const Doc = defineDocumentType(() => ({
   computedFields,
 }));
 
+
 export default makeSource({
   contentDirPath: "src/content",
   documentTypes: [Doc],

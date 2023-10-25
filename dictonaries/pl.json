@@ -1,0 +1,23 @@
+{
+    "hello": {
+        "description": "Gotowe komponenty i szablony kodu, które oszczędzają czas Web Developera.",
+        "action": "Startujemy"
+    },
+    "navbar": {
+        "navs": [
+            "Instalacje",
+            "Poradniki",
+            "Komponenty"
+        ]
+    },
+    "sidebar": {
+        "names": [
+            "Pierwsze kroki",
+            "Frameworki",
+            "Pakiety"
+        ]
+    },
+    "guides": {
+        "title": "Poradniki"
+    }
+}

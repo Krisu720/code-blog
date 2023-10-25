@@ -1,4 +1,4 @@
-import { FC, use, useEffect } from "react";
+import { FC } from "react";
 import { Button, buttonVariants } from "./ui/button";
 import ThemeDropdown from "./ThemeDropdown";
 import LanguageDropdown from "./LanguageDropdown";
@@ -10,35 +10,38 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import Sidebar from "./Sidebar";
 import SearchDialog from "./SearchDialog";
-interface NavbarProps {}
+import { Lang, getDictonary } from "../../dictonaries";
+interface NavbarProps {
+  lang: Lang;
+}
 
-const Navbar: FC<NavbarProps> = ({}) => {
-
+const Navbar = async ({ lang }: NavbarProps) => {
+  const dictonary = await getDictonary(lang);
 
   return (
     <div className=" border-b sticky top-0 dark:bg-black/20 backdrop-blur-xl z-10">
       <div className="h-14 container mx-auto">
         <div className="hidden h-full w-full md:flex items-center justify-between">
           <div className="flex items-center gap-1">
-            <Link href="/" className="font-medium mr-4">
+            <Link href="/home" className="font-medium mr-4">
               code<span className="text-primary">Ready</span>
             </Link>
             <Link
               href="/instalations/introduction"
               className={cn(buttonVariants({ variant: "ghost" }))}
             >
-              Instalations
+              {dictonary.navbar.navs[0]}
             </Link>
             <Link
               href="/guides"
               className={cn(buttonVariants({ variant: "ghost" }))}
             >
-              Guides
+              {dictonary.navbar.navs[1]}
             </Link>
-            <Button variant="ghost">Components</Button>
+            <Link href="/components" className={cn(buttonVariants({ variant: "ghost" }))}> {dictonary.navbar.navs[2]}</Link>
           </div>
           <div className="flex items-center gap-1">
-            <SearchDialog/>
+            <SearchDialog />
             <PackageDropdown />
             <LanguageDropdown />
             <ThemeDropdown />
@@ -55,16 +58,16 @@ const Navbar: FC<NavbarProps> = ({}) => {
                   href="/instalations/introduction"
                   className={cn(buttonVariants({ variant: "ghost" }))}
                 >
-                  Instalation
+                   {dictonary.navbar.navs[0]}
                 </Link>
                 <Link
                   href="/guides"
                   className={cn(buttonVariants({ variant: "ghost" }))}
                 >
-                  Guides
+                   {dictonary.navbar.navs[1]}
                 </Link>
-                <Button variant="ghost">Components</Button>
-                <Sidebar />
+                <Button variant="ghost"> {dictonary.navbar.navs[2]}</Button>
+                <Sidebar dictonary={dictonary}/>
               </SheetContent>
             </Sheet>
           </Button>
@@ -76,7 +79,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
               <PopoverTrigger asChild>
                 <Settings />
               </PopoverTrigger>
-              <PopoverContent>
+              <PopoverContent className="flex flex-col items-center w-[10rem]">
                 <ThemeDropdown />
                 <LanguageDropdown />
                 <PackageDropdown />

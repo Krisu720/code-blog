@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { FC } from 'react'
+import { FC } from "react";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
@@ -8,23 +8,50 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Package } from 'lucide-react';
+import { Package } from "lucide-react";
+import useLocalStorage from "@/hooks/use-local-storage";
+import { CodeReadySettings } from "@/types/global";
 
-interface PackageDropdownProps {
-  
-}
+interface PackageDropdownProps {}
 
 const PackageDropdown: FC<PackageDropdownProps> = ({}) => {
-  return <DropdownMenu>
-  <DropdownMenuTrigger asChild>
-    <Button variant="ghost"><Package className='mr-2'/>pnpm</Button>
-  </DropdownMenuTrigger>
-  <DropdownMenuContent>
-    <DropdownMenuItem>pnpm</DropdownMenuItem>
-    <DropdownMenuItem>npm</DropdownMenuItem>
-    <DropdownMenuItem>yarn</DropdownMenuItem>
-  </DropdownMenuContent>
-</DropdownMenu>
-}
+  const { values, changeValues } = useLocalStorage<CodeReadySettings>({
+    key: "codeReadySettings",
+    fillIfEmpty: { packageManager: "npm" },
+  });
 
-export default PackageDropdown
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost">
+          <Package className="mr-2" />
+          {values?.packageManager}
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem
+          onClick={() => changeValues({ packageManager: "pnpm" })}
+        >
+          pnpm
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => changeValues({ packageManager: "bun" })}
+        >
+          bun
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => changeValues({ packageManager: "npm" })}
+        >
+          npm
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => changeValues({ packageManager: "yarn" })}
+        >
+          yarn
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
+export default PackageDropdown;

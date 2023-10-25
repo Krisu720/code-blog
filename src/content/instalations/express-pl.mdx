@@ -1,0 +1,86 @@
+---
+title: Express.js z Typescriptem
+description: Instalacja backend frameworka z typescript.
+---
+
+### Instalacja
+
+Tworzymy nowy folder i tworzymy package.json.
+
+<CopyInput value="init" />
+
+Instalujemy dwa pakiety
+
+<CopyInput install value="express dotenv"/>
+
+Tworzymy .env i wklejamy:
+
+```env
+PORT=5000
+```
+
+Tworzymy nowy folder index.js i wklejamy poniższy kod:
+
+```js
+const express = require('express');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const app = express();
+const port = process.env.PORT as string;
+
+app.use(express.json())
+
+app.get('/', (req, res) => {
+  res.status(200).json({message:"Get json response."});
+});
+
+app.listen(port, () => {
+  console.log(`[server]: Server is running at http://localhost:${port}`);
+});
+```
+
+Intalujemy typescripta:
+
+<CopyInput install value="-D typescript @types/express @types/node"/>
+
+Tworzmy tsconfig.json
+
+<CopyInput value="npx tsc --init"/>
+
+Wklejamy do tsconfig.json
+
+```json
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "rootDir": "./",
+    "outDir": "./build",
+    "esModuleInterop": true,
+    "strict": true
+  }
+}
+```
+
+Mozemy zainstalowac dodatkowo nodemod aby mieć hot-reload:
+
+Instalujemy nodemona
+
+<CopyInput install value="nodemon"/>
+
+zmieniamy scripts package.json
+
+```json
+ "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.ts"
+  },
+```
+
+Uruchamiamy skrypt poleceniem
+
+```cli
+npm run dev
+```
