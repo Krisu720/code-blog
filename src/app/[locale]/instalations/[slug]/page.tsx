@@ -1,17 +1,15 @@
 import { Mdx } from "@/components/Mdx";
-import Sidebar from "@/components/Sidebar";
 import { allDocs } from "contentlayer/generated";
 import { notFound } from "next/navigation";
-import { Lang, checkLang } from "../../../../../dictonaries";
-import { sleep } from "@/lib/utils";
+
 interface PageProps {
   params: {
     slug: string;
-    lang: string;
+    locale: string;
   };
 }
 
-const getDoc = async (slug: string, lang: Lang) => {
+const getDoc = async (slug: string, lang: string) => {
   const doc = allDocs.find((doc) => {
     return doc.slugAsParams === "instalations/" + slug + `-${lang}`;
   });
@@ -21,8 +19,8 @@ const getDoc = async (slug: string, lang: Lang) => {
   return doc;
 };
 
-const Page = async ({ params: { slug, lang } }: PageProps) => {
-  const doc = await getDoc(slug, await checkLang(lang));
+const Page = async ({ params: { slug, locale } }: PageProps) => {
+  const doc = await getDoc(slug, locale);
   return (
     <>
       <main className="col-span-4 md:col-span-3 lg:col-span-4 md:p-6 p-2">

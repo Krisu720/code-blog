@@ -1,26 +1,22 @@
 "use client";
 
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import React, { FC } from "react";
-import { Lang, dictonaries } from "../../dictonaries";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
+import React from "react";
+import { SheetClose } from "./ui/sheet";
 
-interface SidebarProps {
-  dictonary: typeof dictonaries["pl"] | typeof dictonaries["en"]
-}
-
-const Sidebar: FC<SidebarProps> = ({dictonary}) => {
+const Sidebar = ({ sheetClose }: { sheetClose?: boolean }) => {
   const params = useParams();
-
-
+  const t = useTranslations("Sidebar");
+  const path = usePathname();
   type Navs = {
     label: string;
     path: string;
   }[];
-
   // const navs = {
   //   "Getting Started": [{ label: "Introduction", path: "introduction" }],
   //   Frameworks: [
@@ -49,17 +45,21 @@ const Sidebar: FC<SidebarProps> = ({dictonary}) => {
   //   ],
   // } satisfies Record<PropertyKey, Navs>;
 
+  const isInstallations = path.includes("instalations");
+
+  if (!isInstallations) return null;
+
   const navs = {
-    [dictonary.sidebar.names[0]]: [{ label: "Introduction", path: "introduction" }],
-    [dictonary.sidebar.names[1]]: [
-      { label: "Next.js 13", path: "nextjs13" },
+    [t("names.gettingStarted")]: [
+      { label: "Introduction", path: "introduction" },
     ],
-    [dictonary.sidebar.names[2]]: [
+    [t("names.frameworks")]: [{ label: "Next.js 13", path: "nextjs13" }],
+    [t("names.packages")]: [
       { label: "tRPC", path: "trpc" },
       { label: "Next Themes", path: "nextthemes" },
       { label: "MDX", path: "mdx" },
-      {label: "Express.js",path:"express"},
-      {label:"Shadcn",path:"shadcn"}
+      { label: "Express.js", path: "express" },
+      { label: "Shadcn", path: "shadcn" },
     ],
   } satisfies Record<PropertyKey, Navs>;
 
@@ -83,7 +83,22 @@ const Sidebar: FC<SidebarProps> = ({dictonary}) => {
                     </span>
                   );
                 } else {
-                  return (
+                  return sheetClose ? (
+                    <SheetClose asChild>
+                      <Link
+                        key={nav.label}
+                        href={nav.path}
+                        className={cn(
+                          buttonVariants({
+                            variant: "link",
+                            size: "sm",
+                          })
+                        )}
+                      >
+                        {nav.label}
+                      </Link>
+                    </SheetClose>
+                  ) : (
                     <Link
                       key={nav.label}
                       href={nav.path}

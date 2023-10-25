@@ -12,23 +12,17 @@ const Footer = () => {
         </Link>
       </div>
       <div className="flex gap-2 items-center">
-        <h1>
-          Built by
           <a
-            target="_blank"
-            href="https://github.com/Krisu720"
-            className="ml-1 underline"
-          >
-            Krzysztof Wilk
-          </a>
-        </h1>
-        <a
           target="_blank"
-          href="https://github.com/Krisu720/ecommerce-next-app"
-          className={cn(buttonVariants({ size: "icon", variant: "ghost" }))}
-        >
-          <Github />
-        </a>
+          href="https://github.com/Krisu720/"
+          >
+            Built by
+            <span
+              className="ml-1 underline"
+            >
+              Krzysztof Wilk
+            </span>
+          </a>
       </div>
     </div>
   );

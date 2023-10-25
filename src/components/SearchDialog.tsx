@@ -1,20 +1,63 @@
-'use client'
+"use client";
 
-import { FC } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { SearchIcon } from "lucide-react";
 import {} from "@radix-ui/react-scroll-area";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
+import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { cn } from "@/lib/utils";
+import { DialogClose } from "@radix-ui/react-dialog";
+import { useHotkeys } from "@mantine/hooks";
+import { getHotkeyHandler } from "@mantine/hooks";
 
 interface SearchDialogProps {}
 
 const SearchDialog: FC<SearchDialogProps> = ({}) => {
+  const [field, setField] = useState<string>("");
+  const [open, setOpen] = useState<boolean>(false);
+  useHotkeys([["ctrl+K", () => setOpen((prev) => !prev)]]);
+  const t = useTranslations();
+
+  type Navs = {
+    href: string;
+    title: string;
+  }[];
+
+  const navs = {
+    [t("Navbar.navs.templates")]: [
+      { href: "/instalations/nextjs13", title: "Next.js 13" },
+      { href: "/instalations/introduction", title: "Introduction" },
+      { href: "/instalations/trpc", title: "tRPC" },
+      { href: "/instalations/nextthemes", title: "Next Themes" },
+      { href: "/instalations/mdx", title: "MDX" },
+      { href: "/instalations/express", title: "Express.js" },
+      { href: "/instalations/shadcn", title: "Shadcn" },
+    ],
+    [t("Navbar.navs.components")]: [
+      { href: "/components/productcarousell", title: "Product Carousell" },
+    ],
+  } satisfies Record<PropertyKey, Navs>;
+
+  const items = Object.entries(navs).map(({ "0": name, "1": nav }) =>
+    nav.filter((val) =>
+      val.title.toLocaleLowerCase().includes(field.toLocaleLowerCase())
+    )
+  );
+
+  const isEmpty = !items
+    .map((val) => val.length > 0)
+    .find((val) => val === true)
+    ? true
+    : false;
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={(val) => setOpen(val)}>
       <DialogTrigger asChild>
-        <button className="text-sm border text-muted-foreground h-9  rounded-xl w-60 flex items-center px-2 justify-between relative hover:bg-secondary hover:text-white transition-colors">
+        <button className="text-sm border flex-1 text-muted-foreground h-9  rounded-xl w-60 flex items-center px-2 justify-between relative hover:bg-secondary hover:text-white transition-colors">
           Search documenation
           <span className="text-xs bg-secondary py-0.5 px-1 rounded absolute right-2">
             CTRL+K
@@ -25,6 +68,13 @@ const SearchDialog: FC<SearchDialogProps> = ({}) => {
         <div className="flex w-full items-center gap-1 h-12 px-2 border-b">
           <SearchIcon className="h-5 w-5" />
           <input
+            onKeyDown={getHotkeyHandler([
+              ["ctrl+K", () => setOpen((prev) => !prev)],
+            ])}
+            value={field}
+            onChange={(e) => {
+              setField(e.target.value);
+            }}
             type="text"
             className="flex-1 bg-transparent outline-none"
             placeholder="Search something..."
@@ -33,24 +83,47 @@ const SearchDialog: FC<SearchDialogProps> = ({}) => {
         <div className="h-96">
           <ScrollArea.Root className="w-full h-full py-2">
             <ScrollArea.Viewport className="h-full w-full px-2 ">
-                <div className=" flex flex-col">
-                <Button variant="ghost" size="lg" className="flex justify-start">MDX</Button>
-                <Button variant="ghost" size="lg" className="flex justify-start">Zustand</Button>
-                <Button variant="ghost" size="lg" className="flex justify-start">Zustand</Button>
-                <Button variant="ghost" size="lg" className="flex justify-start">Zustand</Button>
-                <Button variant="ghost" size="lg" className="flex justify-start">Zustand</Button>
-                <Button variant="ghost" size="lg" className="flex justify-start">Zustand</Button>
-                <Button variant="ghost" size="lg" className="flex justify-start">Zustand</Button>
-                <Button variant="ghost" size="lg" className="flex justify-start">Zustand</Button>
-                <Button variant="ghost" size="lg" className="flex justify-start">Zustand</Button>
-                <Button variant="ghost" size="lg" className="flex justify-start">Zustand</Button>
-                <Button variant="ghost" size="lg" className="flex justify-start">Zustand</Button>
-                <Button variant="ghost" size="lg" className="flex justify-start">Zustand</Button>
-                <Button variant="ghost" size="lg" className="flex justify-start">Zustand</Button>
-                <Button variant="ghost" size="lg" className="flex justify-start">Zustand</Button>
-                <Button variant="ghost" size="lg" className="flex justify-start">Zustand</Button>
-                    
-                </div>
+              <div className=" flex flex-col">
+                {Object.entries(navs).map(({ "0": name, "1": nav }) => (
+                  <div key={name}>
+                    <h1 className="text-xs text-muted-foreground">
+                      {nav.filter((val) =>
+                        val.title
+                          .toLocaleLowerCase()
+                          .includes(field.toLocaleLowerCase())
+                      ).length > 0 && name}
+                    </h1>
+                    <div className="flex flex-col mb-2">
+                      {nav
+                        .filter((val) =>
+                          val.title
+                            .toLocaleLowerCase()
+                            .includes(field.toLocaleLowerCase())
+                        )
+                        .map((item) => (
+                          <DialogClose key={item.title} asChild onClick={() => setField("")}>
+                            <Link
+                              className={cn(
+                                buttonVariants({ variant: "ghost" }),
+                                "inline-flex justify-start"
+                              )}
+                              href={item.href}
+                            >
+                              {item.title}
+                            </Link>
+                          </DialogClose>
+                        ))}
+                    </div>
+                  </div>
+                ))}
+                {isEmpty && (
+                  <div className="flex w-full h-full items-center justify-center">
+                    <h1 className="text-lg text-muted-foreground">
+                      {t("Search.noItems")}
+                    </h1>
+                  </div>
+                )}
+              </div>
             </ScrollArea.Viewport>
             <ScrollArea.Scrollbar orientation="vertical" className="flex w-1">
               <ScrollArea.Thumb className="w-0.5 h-2 rounded-full bg-primary flex-1 relative" />

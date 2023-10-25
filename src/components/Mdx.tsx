@@ -4,7 +4,8 @@ import { useMDXComponent } from "next-contentlayer/hooks";
 import { cn } from "@/lib/utils";
 import CopyInput from "./CopyInput";
 import MDXLink from "./MDXLink";
-
+import ProductCarousell from "@/content/components/productcarousell"
+import ProductShowcaseComponent from "./ProductShowcaseComponent";
 
 const components = {
   h1: ({ className, ...props }: React.HtmlHTMLAttributes<HTMLHeadElement>) => (
@@ -160,7 +161,9 @@ const components = {
   ),
   Image,
   CopyInput,
-  MDXLink
+  MDXLink,
+  ProductCarousell,
+  ProductShowcaseComponent
 };
 
 interface MdxProps {

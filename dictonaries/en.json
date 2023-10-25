@@ -1,23 +1,31 @@
 {
-    "hello": {
-        "description": "Ready code components and templates,which are saving Web developers time.",
-        "action": "Get started"
-    },
-    "navbar": {
-        "navs": [
-            "Instalation",
-            "Guides",
-            "Components"
-        ]
-    },
-    "sidebar": {
-        "names": [
-            "Getting Started",
-            "Frameworks",
-            "Packages"
-        ]
-    },
-    "guides": {
-        "title": "Guides"
+  "Hello": {
+    "description": "Ready code components and templates,which are saving Web developers time.",
+    "action": "Get started"
+  },
+  "Navbar": {
+    "navs": {
+      "templates": "Templates",
+      "components": "Components",
+      "guides": "Guides"
     }
+  },
+  "Sidebar": {
+    "names": {
+      "gettingStarted": "Getting Started",
+      "frameworks": "Frameworks",
+      "packages": "Packages"
+    }
+  },
+  "Guides": {
+    "title": "Guides"
+  },
+  "Search": {
+    "noItems": "Not found"
+  },
+  "Components": {
+    "title": "Components",
+    "description": "Code snippets for modern user interface techniques."
+  }
+  
 }

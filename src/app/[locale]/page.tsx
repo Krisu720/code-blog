@@ -2,14 +2,11 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Github } from "lucide-react";
 import Link from "next/link";
-import { checkLang, getDictonary } from "../../../../dictonaries";
+import {useTranslations} from "next-intl";
 
-export default async function Home({
-  params: { lang },
-}: {
-  params: { lang: string };
-}) {
-  const dict = await getDictonary(checkLang(lang));
+export default function Home() {
+
+  const t = useTranslations("Hello");
 
   return (
     <main className="min-h-[calc(100vh-3.5rem)]  flex justify-center items-center">
@@ -18,19 +15,19 @@ export default async function Home({
           code<span className="text-primary">Ready</span>
         </h1>
         <p className="text-2xl max-w-lg text-center">
-          {dict.hello.description}
+          {t("description")}
         </p>
         <div className="flex items-center gap-2">
           <Link
             href="/instalations/introduction"
             className={cn(buttonVariants({ size: "lg" }))}
           >
-            {dict.hello.action}
+            {t("action")}
           </Link>
-          <Button variant="ghost" size="lg">
+          <a href="https://github.com/Krisu720/code-blog" target="_blank" className={cn(buttonVariants({variant:"ghost",size:"lg"}))}>
             <Github className="mr-2" />
             Github{" "}
-          </Button>
+          </a>
         </div>
       </div>
     </main>

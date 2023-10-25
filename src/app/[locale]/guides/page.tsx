@@ -1,14 +1,12 @@
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { checkLang, getDictonary } from "../../../../dictonaries";
 
 const Page = async ({params:{lang}}:{params:{lang:string}}) => {
 
-  const dictonary = await getDictonary(checkLang(lang))
 
   return (
     <div className="container mx-auto py-4">
-      <h1 className="text-6xl font-bold tracking-tighter">{dictonary.guides.title}</h1>
+      {/* <h1 className="text-6xl font-bold tracking-tighter">{dictonary.guides.title}</h1> */}
       <div className="flex items-center justify-center">
 
       <span className="mt-12 text-muted-foreground text-2xl">Soon</span>

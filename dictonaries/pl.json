@@ -1,23 +1,29 @@
 {
-    "hello": {
-        "description": "Gotowe komponenty i szablony kodu, które oszczędzają czas Web Developera.",
-        "action": "Startujemy"
-    },
-    "navbar": {
-        "navs": [
-            "Instalacje",
-            "Poradniki",
-            "Komponenty"
-        ]
-    },
-    "sidebar": {
-        "names": [
-            "Pierwsze kroki",
-            "Frameworki",
-            "Pakiety"
-        ]
-    },
-    "guides": {
-        "title": "Poradniki"
+  "Hello": {
+    "description": "Gotowe komponenty i szablony kodu, które oszczędzają czas Web Developera.",
+    "action": "Startujemy"
+  },
+  "Navbar": {
+    "navs": {
+      "templates": "Przykłady",
+      "components": "Komponenty",
+      "guides": "Poradniki"
     }
+  },
+  "Sidebar": {
+    "names": {
+      "gettingStarted": "Wprowadzenie",
+      "frameworks": "Frameworki",
+      "packages": "Pakiety"
+    }
+  },
+  "Guides": {
+    "title": "Poradniki"
+  },"Search": {
+    "noItems": "Nie znaleziono"
+  },
+  "Components": {
+    "title": "Komponenty",
+    "description": "Gotowe komponenty do stron internetowych."
+  }
 }

@@ -31,8 +31,8 @@ export default function ProductCarousell() {
   };
 
   return (
-    <>
-      <div className="w-80 border relative group">
+    <div className="flex flex-col">
+      <div className="w-80 border-2 border-gray-300 dark:border-gray-300/10 p-1 rounded-xl relative group">
         <div
           className="overflow-hidden h-96 w-full relative"
           ref={constrainsRef}
@@ -79,23 +79,38 @@ export default function ProductCarousell() {
             ))}
           </motion.div>
         </div>
-          <Button
-            className="py-4 top-1/2 left-5 -translate-y-1/2 px-2 hidden  absolute  group-hover:flex"
-            size="icon"
-            disabled={slide === 0}
-            onClick={() => left()}
-          >
-            <ChevronLeft className="h-6 w-6" />
-          </Button>
-          <Button
-            className="py-4 top-1/2 right-5 -translate-y-1/2 px-2 hidden  absolute  group-hover:flex"
-            size="icon"
-            disabled={slide + 1 === images.length}
-            onClick={() => right()}
-          >
-            <ChevronRight className="h-6 w-6" />
-          </Button>
+        <button
+          className="top-1/2 -translate-y-1/2 absolute -left-16 flex z-10 hover:text-primary disabled:opacity-20 transition-all"
+          disabled={slide === 0}
+          onClick={() => left()}
+        >
+          <ChevronLeft className="h-12 w-12" />
+        </button>
+        <button
+          className="top-1/2 -translate-y-1/2 absolute -right-16 flex z-10 hover:text-primary disabled:opacity-20 transition-all"
+          disabled={slide + 1 === images.length}
+          onClick={() => right()}
+        >
+          <ChevronRight className="h-12 w-12 " />
+        </button>
       </div>
-    </>
+      
+      {/* <div className="flex justify-between gap-2">
+      <Button
+          className="py-4 left-5 translate-y-1/2 px-2  flex w-full"
+          disabled={slide === 0}
+          onClick={() => left()}
+        >
+          <ChevronLeft className="h-6 w-6" />
+        </Button>
+        <Button
+          className="py-4 right-5 translate-y-1/2 px-2  flex w-full"
+          disabled={slide + 1 === images.length}
+          onClick={() => right()}
+        >
+          <ChevronRight className="h-6 w-6" />
+        </Button>
+      </div> */}
+    </div>
   );
 }

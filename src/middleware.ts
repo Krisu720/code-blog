@@ -1,19 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
-import { dictonaries } from "../dictonaries";
+import createMiddleware from "next-intl/middleware";
 
-export const middleware = (req: NextRequest) => {
-  const pathname = req.nextUrl.pathname;
-  const path = Object.keys(dictonaries).filter((key) =>
-    pathname.startsWith(`/${key}`)
-  );
-  if (path.length < 1) {
-    return NextResponse.redirect(new URL("/en" + pathname, req.url));
-  }
-};
+export default createMiddleware({
+  locales: ["en", "pl"],
+  defaultLocale: "en",
+});
 
 export const config = {
-  matcher: [
-    //Skip all internal paths (_next)
-    "/((?!_next).*)",
-  ],
+  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
 };

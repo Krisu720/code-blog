@@ -4,26 +4,23 @@ import { allDocs } from "contentlayer/generated";
 import { notFound } from "next/navigation";
 import React from "react";
 
-const getDoc = async (slug: string) => {
+const getDoc = async (slug: string,lang: string) => {
   const doc = allDocs.find((doc) => {
-    return doc.slugAsParams === "components/" + slug;
+    return doc.slugAsParams === "components/" + slug  + `-${lang}`;
   });
   if (!doc) notFound();
   return doc;
 };
 
-const Page = async ({ params: { slug } }: { params: { slug: string } }) => {
-  const doc = await getDoc(slug);
+const Page = async ({ params: { slug,locale } }: { params: { slug: string,locale:string } }) => {
+  const doc = await getDoc(slug,locale);
 
   return (
-    <div className="container">
+    <div className="lg:container">
       <h1 className="text-2xl font-semibold mt-6">{doc.title}</h1>
       <h2 className="text-muted-foreground">
         {doc.description}
       </h2>
-      <div className="bg-gray-500/10 h-[35rem] rounded-xl border mt-8 flex justify-center items-center">
-          <ProductCarousell/>
-      </div>
       <Mdx code={doc.body.code} />
     </div>
   );
