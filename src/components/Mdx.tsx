@@ -4,7 +4,9 @@ import { useMDXComponent } from "next-contentlayer/hooks";
 import { cn } from "@/lib/utils";
 import CopyInput from "./CopyInput";
 import MDXLink from "./MDXLink";
-import ProductCarousell from "@/content/components/productcarousell"
+import Slider from "@/content/components/Slider";
+import TextSlider from "@/content/components/TextSlider";
+import ProductCarousell from "@/content/components/productcarousell";
 import ProductShowcaseComponent from "./ProductShowcaseComponent";
 
 const components = {
@@ -163,7 +165,9 @@ const components = {
   CopyInput,
   MDXLink,
   ProductCarousell,
-  ProductShowcaseComponent
+  Slider,
+  TextSlider,
+  ProductShowcaseComponent,
 };
 
 interface MdxProps {
