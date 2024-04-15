@@ -4,10 +4,13 @@ import { useMDXComponent } from "next-contentlayer/hooks";
 import { cn } from "@/lib/utils";
 import CopyInput from "./CopyInput";
 import MDXLink from "./MDXLink";
-import Slider from "@/content/components/Slider";
-import TextSlider from "@/content/components/TextSlider";
-import ProductCarousell from "@/content/components/productcarousell";
+import Slider from "@/components/MDXcomponents/Slider";
+import TextSlider from "@/components/MDXcomponents/TextSlider";
+import ProductCarousell from "@/components/MDXcomponents/productcarousell";
 import ProductShowcaseComponent from "./ProductShowcaseComponent";
+import { CodePreviewTab, CodePreviewTabs } from "./CodePreviewTab";
+import TimeShowcase from "./TimeShowcase";
+import RectsShowcase from "./RectsShowcase";
 
 const components = {
   h1: ({ className, ...props }: React.HtmlHTMLAttributes<HTMLHeadElement>) => (
@@ -146,7 +149,7 @@ const components = {
   pre: ({ className, ...props }: React.HtmlHTMLAttributes<HTMLPreElement>) => (
     <pre
       className={cn(
-        "mb-4 mt-6 overflow-x-auto rounded-lg border bg-black p-4 max-h-[600px]",
+        "my-4 overflow-x-auto rounded-lg border bg-black p-4 max-h-[600px]",
         className
       )}
       {...props}
@@ -168,6 +171,10 @@ const components = {
   Slider,
   TextSlider,
   ProductShowcaseComponent,
+  CodePreviewTab,
+  CodePreviewTabs,
+  TimeShowcase,
+  RectsShowcase
 };
 
 interface MdxProps {

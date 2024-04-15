@@ -15,6 +15,8 @@ export type Doc = {
   type: 'Doc'
   title: string
   description: string
+  image: string
+  tags: string
   /** MDX file body */
   body: MDX
   slugAsParams: string

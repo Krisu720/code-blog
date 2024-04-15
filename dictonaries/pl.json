@@ -7,23 +7,39 @@
     "navs": {
       "templates": "Przykłady",
       "components": "Komponenty",
-      "guides": "Poradniki"
+      "resources": "Zasoby"
+    },
+    "search": {
+      "placeholder": "Szukaj wpisu...",
+      "empty": "Nie znaleziono",
+      "inputplaceholder": "Wpisz aby wyszukać..."
     }
   },
-  "Sidebar": {
-    "names": {
-      "gettingStarted": "Wprowadzenie",
-      "frameworks": "Frameworki",
-      "packages": "Pakiety"
+  "Instalations": {
+    "title": "Przykłady",
+    "sidebar": {
+      "Examples": "Przykłady",
+      "Hooks": "Hooki"
     }
   },
-  "Guides": {
-    "title": "Poradniki"
+  "Resources": {
+    "title": "Zasoby",
+    "sidebar": {
+      "Resources": "Zasoby"
+    }
   },"Search": {
     "noItems": "Nie znaleziono"
   },
   "Components": {
     "title": "Komponenty",
-    "description": "Gotowe komponenty do stron internetowych."
+    "description": "Gotowe komponenty do stron internetowych.",
+    "sidebar": {
+      "Components": "Components"
+    }
+  },
+  "NotFound": {
+    "title": "Nie znaleziono [404]",
+    "description" : "Nie możemy znaleść postu.",
+    "action": "Wróć"
   }
 }

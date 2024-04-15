@@ -10,18 +10,16 @@ import {
 import { Button } from "./ui/button";
 import { Languages } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import {useLocale} from "next-intl"
 
-interface LanguageDropdownProps {}
 
-const LanguageDropdown: FC<LanguageDropdownProps> = ({}) => {
+const LanguageDropdown = ({}) => {
   const pathname = usePathname();
   const router = useRouter();
   const changeLang = (lang: "pl" | "en") => {
     if (pathname.startsWith("/pl")) {
       router.push("/" + lang + pathname.slice(3));
     } else {
-      router.push("/" + lang + pathname);
+      router.push("/" + lang + pathname.slice(3));
     }
   };
 

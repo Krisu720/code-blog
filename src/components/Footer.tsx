@@ -1,7 +1,4 @@
 import Link from "next/link";
-import { buttonVariants } from "./ui/button";
-import { Github } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 const Footer = () => {
   return (

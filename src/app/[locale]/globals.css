@@ -76,7 +76,7 @@
   color: gray;
 }
 [data-rehype-pretty-code-fragment] > pre {
-  @apply dark:!bg-transparent !bg-neutral-700;
+  @apply dark:!bg-transparent !bg-neutral-900;
 }
 
 [data-rehype-pretty-code-fragment] .line--highlighted {

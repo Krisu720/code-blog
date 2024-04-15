@@ -1,3 +1,5 @@
+'use client'
+
 import { Button, buttonVariants } from "./ui/button";
 import ThemeDropdown from "./ThemeDropdown";
 import LanguageDropdown from "./LanguageDropdown";
@@ -9,12 +11,13 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "./ui/sheet";
 import Sidebar from "./Sidebar";
 import SearchDialog from "./SearchDialog";
-import { useTranslations } from "next-intl";
-import { headers } from "next/headers";
+import { getDictionary } from "../../dictonaries/config";
+import { SidebarNavigation } from "@/types/global";
+import useLang from "@/hooks/use-lang";
 
-const Navbar = () => {
-  const t = useTranslations("Navbar");
-
+const Navbar = ({navigation}:{navigation: SidebarNavigation | null}) => {
+  const lang = useLang()
+  const d = getDictionary(lang);
   return (
     <div className=" border-b sticky top-0 dark:bg-black/20 backdrop-blur-xl z-10">
       <div className="h-14 px-2 lg:container mx-auto">
@@ -24,23 +27,23 @@ const Navbar = () => {
               code<span className="text-primary">Ready</span>
             </Link>
             <Link
-              href="/instalations/introduction"
+              href="/instalations"
               className={cn(buttonVariants({ variant: "ghost" }))}
             >
-              {t("navs.templates")}
+              {d.Navbar.navs.templates}
             </Link>
             <Link
               href="/components"
               className={cn(buttonVariants({ variant: "ghost" }))}
             >
-              {t("navs.components")}
+              {d.Navbar.navs.components}
             </Link>
             <Link
-              href="/guides"
+              href="/resources"
               className={cn(buttonVariants({ variant: "ghost" }))}
             >
               {" "}
-              {t("navs.guides")}
+              {d.Navbar.navs.resources}
             </Link>
           </div>
           <SearchDialog />
@@ -64,24 +67,24 @@ const Navbar = () => {
                 </SheetClose>
                 <SheetClose asChild>
                   <Link
-                    href="/instalations/introduction"
+                    href="/instalations"
                     className={cn(
                       buttonVariants({ variant: "ghost" }),
                       "inline-flex justify-start"
                     )}
                   >
-                    {t("navs.templates")}
+                    {d.Navbar.navs.templates}
                   </Link>
                 </SheetClose>
                 <SheetClose asChild>
                   <Link
-                    href="/guides"
+                    href="/resources"
                     className={cn(
                       buttonVariants({ variant: "ghost" }),
                       "inline-flex justify-start"
                     )}
                   >
-                    {t("navs.guides")}
+                    {d.Navbar.navs.resources}
                   </Link>
                 </SheetClose>
                 <SheetClose asChild>
@@ -92,13 +95,13 @@ const Navbar = () => {
                       "inline-flex justify-start"
                     )}
                   >
-                    {t("navs.components")}
+                    {d.Navbar.navs.components}
                   </Link>
                 </SheetClose>
 
                 <div className="flex-1 ">
                   <SheetClose asChild>
-                    <Sidebar sheetClose />
+                    {navigation && <Sidebar navigation={navigation} sheetClose />}
                   </SheetClose>
                 </div>
                 <Button variant="ghost" size="icon">

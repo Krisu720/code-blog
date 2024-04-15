@@ -1,53 +1,206 @@
 ---
 title: Slider
 description: Slider ze zdjęciami jako baner.
+image: /sliderr.png
 ---
 
-<ProductShowcaseComponent>
-  <Slider />
-</ProductShowcaseComponent>
+<CodePreviewTabs>
+  <CodePreviewTab>
+    <ProductShowcaseComponent>
+      <Slider />
+    </ProductShowcaseComponent>
+  </CodePreviewTab>
+  <CodePreviewTab code>
+      ```js
+    "use client";
 
+    import React, { ReactNode, useEffect, useRef, useState } from "react";
+    import { AnimatePresence, motion } from "framer-motion";
+    import Image from "next/image";
+
+    const images = [
+      "https://images.unsplash.com/photo-1699192781399-e2275a9f60b6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1695653422259-8a74ffe90401?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1697382803114-0be920c5e160?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1682687982107-14492010e05e?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    ];
+
+    const Slider = () => {
+      const { currentTime, startTimer, stopTimer, resetTimer, setTimer } = useTimer(
+        {
+          initialTime: 0,
+        }
+      );
+
+      const [slide, setSlide] = useState(0);
+
+      const TIME_LIMIT = 800;
+
+      useEffect(() => {
+        startTimer();
+      }, []);
+
+      useEffect(() => {
+        images.map((_, index) => {
+          if (currentTime === (index + 1) * TIME_LIMIT) {
+            setSlide(index + 1);
+            if (index === images.length - 1) {
+              resetTimer();
+              setSlide(0);
+            }
+          }
+        });
+      }, [currentTime]);
+
+      return (
+        <div className="overflow-hidden relative mx-4 my-4 rounded-xl h-full w-full">
+          <motion.div
+            animate={{ x: -slide * 100 + "%" }}
+            transition={{ ease: [0.42, 0.03, 0.45, 0.95] }}
+            className="flex"
+          >
+            {images.map((image, index) => (
+              <div className="relative h-[35rem] w-full flex-shrink-0">
+                <Image alt="" fill src={image} className="object-cover" />
+              </div>
+            ))}
+          </motion.div>
+          <div className="flex gap-1 absolute left-1/2 bg-black/50 rounded-full p-2 -translate-x-1/2 bottom-5">
+            {images.map((_, index) => (
+              <motion.button
+                animate={{
+                  width:
+                    currentTime < (index + 1) * TIME_LIMIT &&
+                    currentTime > index * TIME_LIMIT
+                      ? 24
+                      : 12,
+                  opacity:
+                    currentTime < (index + 1) * TIME_LIMIT &&
+                    currentTime > index * TIME_LIMIT
+                      ? 1
+                      : 0.4,
+                }}
+                className="h-3 w-6 bg-gray-500 rounded-full overflow-hidden"
+                onMouseEnter={() => stopTimer()}
+                onMouseLeave={() => startTimer()}
+                onClick={() => {
+                  setSlide(index);
+                  setTimer(index * TIME_LIMIT);
+                }}
+                whileHover={{ opacity: 0.9 }}
+              >
+                <motion.div
+                  className="bg-white h-full"
+                  transition={{ type: "tween", duration: 0.1 }}
+                  animate={{
+                    width:
+                      currentTime < (index + 1) * TIME_LIMIT &&
+                      currentTime > index * TIME_LIMIT
+                        ? (currentTime / TIME_LIMIT - slide) * 100 + "%"
+                        : 0,
+                  }}
+                />
+              </motion.button>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    export default Slider;
+    ```
+
+  </CodePreviewTab>
+</CodePreviewTabs>
+
+# Text slider
+
+<CodePreviewTabs>
+<CodePreviewTab>
+<ProductShowcaseComponent>
+  <TextSlider />
+</ProductShowcaseComponent>
+</CodePreviewTab>
+<CodePreviewTab code>
 ```js
 "use client";
 
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
+import useTimer from "@/hooks/useTimer";
 
-const images = [
-  "https://images.unsplash.com/photo-1699192781399-e2275a9f60b6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1695653422259-8a74ffe90401?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1697382803114-0be920c5e160?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1682687982107-14492010e05e?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+const CustomComponent = ({ children }: { children: ReactNode }) => {
+  return (
+    <div className="h-full w-full flex items-center pl-4 lg:pl-12">
+      <h1 className="text-4xl text-balance lg:text-6xl font-bold max-w-2xl leading-12 text-white">
+        {children}
+      </h1>
+    </div>
+  );
+};
+const images: ImageWithComponent[] = [
+  {
+    element: (
+      <CustomComponent>
+        Poznaj nowe możliwości używając lornetki naszej marki.
+      </CustomComponent>
+    ),
+    url: "https://images.unsplash.com/photo-1699192781399-e2275a9f60b6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+  {
+    element: (
+      <CustomComponent>
+        Dostarczaj jedzenie z Uber Eats i zarabiaj pieniądze na swoim biznesie.
+      </CustomComponent>
+    ),
+    url: "https://images.unsplash.com/photo-1695653422259-8a74ffe90401?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+  {
+    element: (
+      <CustomComponent>
+        Wypożycz sprzęt w każdym zakątku świata.
+      </CustomComponent>
+    ),
+    url: "https://images.unsplash.com/photo-1697382803114-0be920c5e160?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+  {
+    element: (
+      <CustomComponent>
+        Spełniaj swoje marzenia z pomocą naszych usług pożyczkowych.
+      </CustomComponent>
+    ),
+    url: "https://images.unsplash.com/photo-1682687982107-14492010e05e?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
 ];
 
-const Slider = () => {
-  const { currentTime, startTimer, stopTimer, resetTimer, setTimer } = useTimer(
-    {
-      initialTime: 0,
-    }
-  );
+type ImageWithComponent = {
+  url: string;
+  element?: JSX.Element;
+};
 
+const TextSlider = () => {
+  const { elapsedTime, handlePause, handleReset, handleSet, handleStart } =
+    useTimer();
   const [slide, setSlide] = useState(0);
 
-  const TIME_LIMIT = 800;
+  const TIME_LIMIT = 3000;
 
   useEffect(() => {
-    startTimer();
+    handleStart();
   }, []);
 
   useEffect(() => {
     images.map((_, index) => {
-      if (currentTime === (index + 1) * TIME_LIMIT) {
+      if (elapsedTime >= (index + 1) * TIME_LIMIT) {
         setSlide(index + 1);
         if (index === images.length - 1) {
-          resetTimer();
+          handleReset();
           setSlide(0);
         }
       }
     });
-  }, [currentTime]);
-
+  }, [elapsedTime]);
   return (
     <div className="overflow-hidden relative mx-4 my-4 rounded-xl h-full w-full">
       <motion.div
@@ -56,32 +209,51 @@ const Slider = () => {
         className="flex"
       >
         {images.map((image, index) => (
-          <div className="relative h-[35rem] w-full flex-shrink-0">
-            <Image alt="" fill src={image} className="object-cover" />
+          <div key={index} className="relative h-[25rem] w-full flex-shrink-0">
+            <Image alt="" fill src={image.url} className="object-cover" />
+            <AnimatePresence>
+              {image.element && slide === index && (
+                <motion.div
+                  initial={{ opacity: 0, x: -50, filter: "blur(4px)" }}
+                  transition={{
+                    delay: 0.18,
+                    duration: 0.6,
+                    ease: [0.52, 0.54, 0, 1.03],
+                  }}
+                  animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, x: 50, filter: "blur(4px)" }}
+                  style={{ translateY: "-50%" }}
+                  className="absolute top-1/2 w-full h-full"
+                >
+                  {image.element}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         ))}
       </motion.div>
       <div className="flex gap-1 absolute left-1/2 bg-black/50 rounded-full p-2 -translate-x-1/2 bottom-5">
         {images.map((_, index) => (
           <motion.button
+            key={index}
             animate={{
               width:
-                currentTime < (index + 1) * TIME_LIMIT &&
-                currentTime > index * TIME_LIMIT
+                elapsedTime < (index + 1) * TIME_LIMIT &&
+                elapsedTime > index * TIME_LIMIT
                   ? 24
                   : 12,
               opacity:
-                currentTime < (index + 1) * TIME_LIMIT &&
-                currentTime > index * TIME_LIMIT
+                elapsedTime < (index + 1) * TIME_LIMIT &&
+                elapsedTime > index * TIME_LIMIT
                   ? 1
                   : 0.4,
             }}
             className="h-3 w-6 bg-gray-500 rounded-full overflow-hidden"
-            onMouseEnter={() => stopTimer()}
-            onMouseLeave={() => startTimer()}
+            onMouseEnter={() => handlePause()}
+            onMouseLeave={() => handleStart()}
             onClick={() => {
               setSlide(index);
-              setTimer(index * TIME_LIMIT);
+              handleSet(index * TIME_LIMIT);
             }}
             whileHover={{ opacity: 0.9 }}
           >
@@ -90,9 +262,9 @@ const Slider = () => {
               transition={{ type: "tween", duration: 0.1 }}
               animate={{
                 width:
-                  currentTime < (index + 1) * TIME_LIMIT &&
-                  currentTime > index * TIME_LIMIT
-                    ? (currentTime / TIME_LIMIT - slide) * 100 + "%"
+                  elapsedTime < (index + 1) * TIME_LIMIT &&
+                  elapsedTime > index * TIME_LIMIT
+                    ? (elapsedTime / TIME_LIMIT - slide) * 100 + "%"
                     : 0,
               }}
             />
@@ -103,5 +275,7 @@ const Slider = () => {
   );
 };
 
-export default Slider;
+export default TextSlider;
 ```
+</CodePreviewTab>
+</CodePreviewTabs>

@@ -1,55 +1,78 @@
-import { useState, useEffect } from 'react';
+'use client'
 
-type TimerHookProps = {
-  initialTime?: number;
-};
+import { useState, useRef, useEffect } from "react";
 
-type TimerHookResult = {
-  currentTime: number;
-  startTimer: () => void;
-  stopTimer: () => void;
-  resetTimer: () => void;
-  setTimer: (time:number) => void;
-};
-
-const useTimer = ({ initialTime }: TimerHookProps): TimerHookResult => {
-  const [currentTime, setCurrentTime] = useState(initialTime?initialTime:0);
-  const [running, setRunning] = useState(false);
+const useTimer = (initialState = 0) => {
+  const [elapsedTime, setElapsedTime] = useState(initialState);
+  const [isRunning, setIsRunning] = useState(false);
+  const [startedDate, setStartedDate] = useState<number | null>(null);
+  const countRef = useRef<NodeJS.Timeout | null>(null);
+  const [checkpoint, setCheckpoint] = useState<number[] | null>(null);
+  const [tran, setTran] = useState<number[] | null>(null);
 
   useEffect(() => {
-    let timerId: NodeJS.Timeout | undefined;
-
-    if (running) {
-      timerId = setInterval(() => {
-        setCurrentTime((prevTime) => prevTime + 1);
+    if (startedDate && isRunning && !checkpoint) {
+      countRef.current = setInterval(() => {
+        const endTime = Date.now();
+        const timeElapsed = endTime - startedDate;
+        setElapsedTime(timeElapsed);
       }, 1);
-    } else {
-      clearInterval(timerId);
+      setIsRunning(true);
     }
-
+    if (startedDate && isRunning && tran) {
+      countRef.current = setInterval(() => {
+        const endTime = Date.now();
+        const timeElapsed = endTime - startedDate - tran.reduce((a, b) => b+a, 0);
+        setElapsedTime(timeElapsed);
+      }, 1);
+      setIsRunning(true);
+    }
     return () => {
-      if(timerId){
-        clearInterval(timerId);
-      }
+      countRef.current && clearInterval(countRef.current);
     };
-  }, [running]);
+  }, [startedDate, isRunning]);
 
-  const startTimer = () => {
-    setRunning(true);
+  const handleStart = () => {
+    if (checkpoint) {
+      setTran((prev) => {
+        if (prev) {
+          return [...prev, Date.now() - checkpoint[checkpoint.length - 1]];
+        } else {
+          return checkpoint.map((item) => Date.now() - item);
+        }
+      });
+    }
+    setIsRunning(true);
+    if (!startedDate) setStartedDate(Date.now());
   };
 
-  const stopTimer = () => {
-    setRunning(false);
+  const handlePause = () => {
+    setIsRunning(false);
+    countRef.current && clearInterval(countRef.current);
+    setCheckpoint((prev) => {
+      if (prev) {
+        return [...prev, Date.now()];
+      } else {
+        return [Date.now()];
+      }
+    });
   };
 
-  const resetTimer  = () => {
-    setCurrentTime(0);
-  }
-  const setTimer = (time:number) => {
-    setCurrentTime(time);
+  const handleReset = () => {
+    setElapsedTime(0);
+    setCheckpoint(null);
+    setTran(null);
+    setStartedDate(Date.now());
   }
 
-  return { currentTime, startTimer, stopTimer,resetTimer,setTimer };
+  const handleSet = (time: number) => {
+    setElapsedTime(time);
+    setStartedDate(Date.now()-time);
+    setCheckpoint(null);
+    setTran(null);
+  }
+
+  return { elapsedTime, isRunning, handleStart, handlePause,handleReset,handleSet };
 };
 
 export default useTimer;

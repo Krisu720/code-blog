@@ -2,6 +2,8 @@ import { Mdx } from "@/components/Mdx";
 import { allDocs } from "contentlayer/generated";
 import { notFound } from "next/navigation";
 
+
+
 interface PageProps {
   params: {
     slug: string;

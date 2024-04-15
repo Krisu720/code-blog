@@ -1,18 +1,20 @@
 "use client";
 
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
-import { Input } from "./ui/input";
 import { SearchIcon } from "lucide-react";
 import {} from "@radix-ui/react-scroll-area";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
-import { Button, buttonVariants } from "./ui/button";
+import { buttonVariants } from "./ui/button";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useHotkeys } from "@mantine/hooks";
 import { getHotkeyHandler } from "@mantine/hooks";
+import { SidebarNavigation } from "@/types/global";
+import { getDocs, getNavigation } from "@/lib/navigation";
+import useLang from "@/hooks/use-lang";
+import { getDictionary } from "../../dictonaries/config";
 
 interface SearchDialogProps {}
 
@@ -20,31 +22,22 @@ const SearchDialog: FC<SearchDialogProps> = ({}) => {
   const [field, setField] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
   useHotkeys([["ctrl+K", () => setOpen((prev) => !prev)]]);
-  const t = useTranslations();
+  const lang = useLang();
 
-  type Navs = {
-    href: string;
-    title: string;
-  }[];
+  const d = getDictionary(lang);
 
   const navs = {
-    [t("Navbar.navs.templates")]: [
-      { href: "/instalations/nextjs13", title: "Next.js 13" },
-      { href: "/instalations/introduction", title: "Introduction" },
-      { href: "/instalations/trpc", title: "tRPC" },
-      { href: "/instalations/nextthemes", title: "Next Themes" },
-      { href: "/instalations/mdx", title: "MDX" },
-      { href: "/instalations/express", title: "Express.js" },
-      { href: "/instalations/shadcn", title: "Shadcn" },
-    ],
-    [t("Navbar.navs.components")]: [
-      { href: "/components/productcarousell", title: "Product Carousell" },
-    ],
-  } satisfies Record<PropertyKey, Navs>;
+    ...getNavigation("instalations", lang),
+    ...getNavigation("components", lang),
+    ...getNavigation("resources", lang),
+  } satisfies SidebarNavigation;
 
   const items = Object.entries(navs).map(({ "0": name, "1": nav }) =>
-    nav.filter((val) =>
-      val.title.toLocaleLowerCase().includes(field.toLocaleLowerCase())
+    nav.filter(
+      (val) =>
+        val.label.toLocaleLowerCase().includes(field.toLocaleLowerCase()) ||
+        val.tags.filter((tag) => tag.includes(field.toLocaleLowerCase()))
+          .length > 0
     )
   );
 
@@ -57,8 +50,8 @@ const SearchDialog: FC<SearchDialogProps> = ({}) => {
   return (
     <Dialog open={open} onOpenChange={(val) => setOpen(val)}>
       <DialogTrigger asChild>
-        <button className="text-sm border flex-1 text-muted-foreground h-9  rounded-xl w-60 flex items-center px-2 justify-between relative hover:bg-secondary hover:text-white transition-colors">
-          Search documenation
+        <button className="text-sm border flex-1 text-muted-foreground h-9  rounded-xl w-60 flex items-center px-2 justify-between relative hover:bg-secondary dark:hover:text-white transition-colors">
+          {d.Navbar.search.placeholder}
           <span className="text-xs bg-secondary py-0.5 px-1 rounded absolute right-2">
             CTRL+K
           </span>
@@ -77,7 +70,7 @@ const SearchDialog: FC<SearchDialogProps> = ({}) => {
             }}
             type="text"
             className="flex-1 bg-transparent outline-none"
-            placeholder="Search something..."
+            placeholder={d.Navbar.search.inputplaceholder}
           />
         </div>
         <div className="h-96">
@@ -87,29 +80,41 @@ const SearchDialog: FC<SearchDialogProps> = ({}) => {
                 {Object.entries(navs).map(({ "0": name, "1": nav }) => (
                   <div key={name}>
                     <h1 className="text-xs text-muted-foreground">
-                      {nav.filter((val) =>
-                        val.title
-                          .toLocaleLowerCase()
-                          .includes(field.toLocaleLowerCase())
+                      {nav.filter(
+                        (val) =>
+                          val.label
+                            .toLocaleLowerCase()
+                            .includes(field.toLocaleLowerCase()) ||
+                          val.tags.filter((tag) =>
+                            tag.includes(field.toLocaleLowerCase())
+                          ).length > 0
                       ).length > 0 && name}
                     </h1>
-                    <div className="flex flex-col mb-2">
+                    <div className="flex flex-col">
                       {nav
-                        .filter((val) =>
-                          val.title
-                            .toLocaleLowerCase()
-                            .includes(field.toLocaleLowerCase())
+                        .filter(
+                          (val) =>
+                            val.label
+                              .toLocaleLowerCase()
+                              .includes(field.toLocaleLowerCase()) ||
+                            val.tags.filter((tag) =>
+                              tag.includes(field.toLocaleLowerCase())
+                            ).length > 0
                         )
                         .map((item) => (
-                          <DialogClose key={item.title} asChild onClick={() => setField("")}>
+                          <DialogClose
+                            key={item.label}
+                            asChild
+                            onClick={() => setField("")}
+                          >
                             <Link
                               className={cn(
                                 buttonVariants({ variant: "ghost" }),
                                 "inline-flex justify-start"
                               )}
-                              href={item.href}
+                              href={item.path}
                             >
-                              {item.title}
+                              {item.label}
                             </Link>
                           </DialogClose>
                         ))}
@@ -119,7 +124,7 @@ const SearchDialog: FC<SearchDialogProps> = ({}) => {
                 {isEmpty && (
                   <div className="flex w-full h-full items-center justify-center">
                     <h1 className="text-lg text-muted-foreground">
-                      {t("Search.noItems")}
+                      {d.Navbar.search.empty}
                     </h1>
                   </div>
                 )}
